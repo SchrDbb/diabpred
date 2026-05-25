@@ -3,7 +3,7 @@
 [![CI](https://github.com/SchrDbb/diabpred/actions/workflows/ci.yml/badge.svg)](https://github.com/SchrDbb/diabpred/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue)](https://www.python.org/)
-[![JOSS](https://joss.theoj.org/papers/XXXXXXXX/status.svg)](https://joss.theoj.org/papers/XXXXXXXX)
+
 
 **DiabPred** is an open-source Python toolkit for reproducible diabetes risk
 prediction. It benchmarks seven classical machine learning classifiers on the
