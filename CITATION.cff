@@ -1,0 +1,37 @@
+cff-version: 1.2.0
+message: "If you use DiabPred in your research, please cite it as below."
+type: software
+title: "DiabPred: An open-source machine learning toolkit for diabetes risk prediction"
+version: "1.0.0"
+date-released: "2025-01-01"
+license: MIT
+repository-code: "https://github.com/SchrDbb/diabpred"
+url: "https://github.com/SchrDbb/diabpred"
+abstract: >
+  DiabPred is an open-source Python toolkit for reproducible diabetes risk
+  prediction using classical machine learning. It provides a unified benchmark
+  of seven classifiers on the Pima Indians Diabetes Dataset, a clean prediction
+  API, automated evaluation visualisations, and full reproducibility support.
+keywords:
+  - diabetes prediction
+  - machine learning
+  - scikit-learn
+  - clinical decision support
+  - reproducible research
+  - open source
+authors:
+  - family-names: "Dassi Bopda"
+    given-names: "Blondel Christian"
+    orcid: "https://orcid.org/0009-0002-6694-7611"
+    affiliation: "DirimSi Institute, University of Buea, University of Cheikh Anta Diop"
+    email: "dassibopdablondel@gmail.com"
+preferred-citation:
+  type: article
+  title: "DiabPred: An open-source machine learning toolkit for diabetes risk prediction"
+  authors:
+    - family-names: "Dassi Bopda"
+      given-names: "Blondel Christian"
+      orcid: "https://orcid.org/0009-0002-6694-7611"
+  journal: "Journal of Open Source Software"
+  year: 2026
+  doi: "10.5281/zenodo.20371567"

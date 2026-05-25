@@ -1,0 +1,48 @@
+version: "3.9"
+
+# DiabPred – Docker Compose
+#
+# Services:
+#   experiment  -- runs the full benchmark pipeline and exits
+#   webapp      -- serves the prediction web interface on port 5000
+#
+# Usage:
+#   docker compose up experiment        # reproduce the paper results
+#   docker compose up webapp            # start the prediction UI
+#   docker compose up                   # run both
+
+services:
+
+  # ── Full benchmark experiment ──────────────────────────────────────────────
+  experiment:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: diabpred-experiment
+    volumes:
+      - ./outputs:/app/outputs          # persist results to host
+      - ./data:/app/data                # read data from host if present
+    environment:
+      - DIABPRED_SEED=42
+    command: python scripts/run_experiment.py --output-dir outputs --cv 5
+    restart: "no"
+
+  # ── Web interface ──────────────────────────────────────────────────────────
+  webapp:
+    build:
+      context: .
+      dockerfile: Dockerfile.webapp
+    container_name: diabpred-webapp
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./models:/app/models            # share trained models
+      - ./data:/app/data
+    environment:
+      - FLASK_ENV=production
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped

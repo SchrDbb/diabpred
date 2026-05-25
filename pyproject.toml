@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "diabpred"
+version = "1.0.0"
+description = "An open-source ML toolkit for reproducible diabetes risk prediction"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Your Name", email = "your@email.com" }
+]
+keywords = [
+    "diabetes",
+    "machine learning",
+    "prediction",
+    "scikit-learn",
+    "clinical decision support",
+    "reproducible research",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "scikit-learn>=1.3.0",
+    "numpy>=1.24.0",
+    "pandas>=2.0.0",
+    "matplotlib>=3.7.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "flake8>=6.0.0",
+]
+web = [
+    "flask>=2.3.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/SchrDbb/diabpred"
+Repository = "https://github.com/SchrDbb/diabpred"
+"Bug Tracker" = "https://github.com/SchrDbb/diabpred/issues"
+
+[project.scripts]
+diabpred = "diabpred.cli:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v"
+
+[tool.flake8]
+max-line-length = 100
+extend-ignore = ["E501", "W503", "E402"]

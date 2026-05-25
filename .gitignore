@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+env/
+.env/
+
+# Test / coverage
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Outputs (generated — don't commit large binary files)
+outputs/models/*.pkl
+outputs/figures/*.png
+outputs/tables/*.csv
+outputs/tables/*.tex
+outputs/experiment_meta.json
+
+# Data (download separately)
+data/diabetes.csv
+
+# Jupyter
+.ipynb_checkpoints/
+notebooks/.ipynb_checkpoints/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+
+# Docker
+*.log
+
+# Extra files that should not be in the repo
+outputs.rar
+*.rar
+data/new/
+paper/*.zip
+paper/*.docx

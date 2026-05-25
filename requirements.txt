@@ -1,0 +1,14 @@
+# DiabPred – Python dependencies
+# Install with: pip install -r requirements.txt
+
+# Core ML
+scikit-learn>=1.3.0
+numpy>=1.24.0
+pandas>=2.0.0
+
+# Visualisation
+matplotlib>=3.7.0
+
+# Dev / testing (optional; needed for `pytest`)
+pytest>=7.4.0
+pytest-cov>=4.1.0

@@ -1,0 +1,107 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Test (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install package
+        run: pip install -e .
+
+      - name: Run tests with coverage
+        run: |
+          pytest tests/ -v --cov=diabpred --cov-report=xml --cov-report=term-missing
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage.xml
+          fail_ci_if_error: false
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install flake8
+      - run: flake8 diabpred/ --max-line-length=100 --ignore=E501,W503,E402
+
+  experiment:
+    name: Reproduce experiment (synthetic data, no figures)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt && pip install -e .
+
+      - name: Generate synthetic dataset for CI
+        run: |
+          python - << 'PYEOF'
+          import numpy as np
+          import pandas as pd
+          from pathlib import Path
+
+          np.random.seed(42)
+          n = 768
+          n_pos = int(n * 0.349)
+          n_neg = n - n_pos
+
+          def make_group(n, is_diabetic):
+              g = 1.0 if is_diabetic else 0.0
+              return pd.DataFrame({
+                  "Pregnancies": np.random.randint(0 if not is_diabetic else 3,
+                                                   6 if not is_diabetic else 15, n).astype(float),
+                  "Glucose": np.random.normal(109 + 30 * g, 26, n).clip(44, 199),
+                  "BloodPressure": np.random.normal(68 + 5 * g, 18, n).clip(24, 122),
+                  "SkinThickness": np.random.normal(19 + 8 * g, 15, n).clip(0, 99),
+                  "Insulin": np.random.normal(68 + 80 * g, 98, n).clip(0, 846),
+                  "BMI": np.random.normal(30 + 5 * g, 7.5, n).clip(18, 67),
+                  "DiabetesPedigreeFunction": np.random.exponential(
+                      0.4 + 0.2 * g, n).clip(0.078, 2.42),
+                  "Age": np.random.randint(21, 55 + 25 * int(g), n).astype(float),
+                  "Outcome": int(is_diabetic),
+              })
+
+          df = pd.concat(
+              [make_group(n_neg, False), make_group(n_pos, True)]
+          ).sample(frac=1, random_state=42).reset_index(drop=True)
+
+          Path("data").mkdir(exist_ok=True)
+          df.to_csv("data/diabetes.csv", index=False)
+          print(f"Synthetic dataset: {df.shape}, positive rate: {df.Outcome.mean():.1%}")
+          PYEOF
+
+      - name: Run experiment
+        run: python scripts/run_experiment.py --no-figures --cv 3
