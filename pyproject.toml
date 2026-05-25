@@ -1,6 +1,6 @@
 [build-system]
 requires = ["setuptools>=61.0", "wheel"]
-build-backend = "setuptools.backends.legacy:build"
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "diabpred"
@@ -9,7 +9,7 @@ description = "An open-source ML toolkit for reproducible diabetes risk predicti
 readme = "README.md"
 license = { file = "LICENSE" }
 authors = [
-    { name = "Your Name", email = "your@email.com" }
+    { name = "Dassi Bopda Blondel Christian", email = "dassibopdablondel@gmail.com" }
 ]
 keywords = [
     "diabetes",
