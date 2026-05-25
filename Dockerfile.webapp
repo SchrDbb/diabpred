@@ -1,0 +1,22 @@
+# DiabPred – Web App Docker image
+# Build: docker build -f Dockerfile.webapp -t diabpred-webapp .
+# Run:   docker run -p 5000:5000 diabpred-webapp
+
+FROM python:3.11-slim
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt flask gunicorn
+
+COPY . .
+RUN pip install --no-cache-dir -e .
+
+RUN mkdir -p models data
+
+EXPOSE 5000
+
+CMD ["python", "examples/web_app/app.py"]
